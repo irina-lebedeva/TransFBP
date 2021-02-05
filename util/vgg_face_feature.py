@@ -2,7 +2,8 @@ import sys
 import os
 import pickle
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from scipy.misc import imread, imresize
 import json
 
@@ -14,7 +15,7 @@ from util.cfg import config
 def extract_feature(image_filepath, layer_name='conv5_1'):
     graph = tf.Graph()
     with graph.as_default():
-        input_maps = tf.placeholder(tf.float32, [None, 224, 224, 3])
+        input_maps = tf.compat.v1.placeholder(tf.float32, [None, 224, 224, 3])
         output, average_image, class_names = vgg_face(config['vgg_face_model_mat_file'], input_maps)
 
     # read sample image
@@ -40,7 +41,7 @@ def get_fm(image_filepath, layer_name='conv5_1'):
     """
     graph = tf.Graph()
     with graph.as_default():
-        input_maps = tf.placeholder(tf.float32, [None, 224, 224, 3])
+        input_maps = tf.compat.v1.placeholder(tf.float32, [None, 224, 224, 3])
         output, average_image, class_names = vgg_face(config['vgg_face_model_mat_file'], input_maps)
 
     # read sample image
@@ -60,7 +61,7 @@ def get_fm(image_filepath, layer_name='conv5_1'):
 def extract_conv_feature(img, layer_name='conv5_1'):
     graph = tf.Graph()
     with graph.as_default():
-        input_maps = tf.placeholder(tf.float32, [None, 224, 224, 3])
+        input_maps = tf.compat.v1.placeholder(tf.float32, [None, 224, 224, 3])
         output, average_image, class_names = vgg_face(config['vgg_face_model_mat_file'], input_maps)
 
     img = (img - img.mean()) / img.std()
@@ -90,7 +91,7 @@ def extract_deep_feats(img_fname):
 
     graph = tf.Graph()
     with graph.as_default():
-        input_maps = tf.placeholder(tf.float32, [None, 224, 224, 3])
+        input_maps = tf.compat.v1.placeholder(tf.float32, [None, 224, 224, 3])
         output, average_image, class_names = vgg_face(config['vgg_face_model_mat_file'], input_maps)
 
     img = (img - img.mean()) / img.std()
